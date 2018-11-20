@@ -2,12 +2,11 @@
   "name": "wxapp-unpacker",
   "version": "0.3",
   "description": "Wechat App(微信小程序, .wxapkg)解包及相关文件(.wxss, .json, .wxs, .wxml)还原工具",
-  "main": "wuWxapkg.js",
+  "main": "src/wuWxapkg.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/qwerty472123/wxappUnpacker.git"
   },
-  "author": "qwerty472123",
   "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/qwerty472123/wxappUnpacker/issues"
