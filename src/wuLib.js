@@ -60,8 +60,10 @@ class LimitedRunner {
     this.run(() => func(...args))
   }
 }
+
 let ioEvent = new CntEvent()
 let ioLimit = new LimitedRunner(4096)
+
 function mkdirs(dir, cb) {
   ioLimit.runWithCb(fs.stat.bind(fs), dir, (err, stats) => {
     if (err) mkdirs(path.dirname(dir), () => fs.mkdir(dir, cb))
@@ -70,6 +72,7 @@ function mkdirs(dir, cb) {
     else cb()
   })
 }
+
 function save(name, content) {
   ioEvent.encount()
   mkdirs(path.dirname(name), () =>
@@ -79,6 +82,7 @@ function save(name, content) {
     })
   )
 }
+
 function get(name, cb, opt = { encoding: 'utf8' }) {
   ioEvent.encount()
   ioLimit.runWithCb(fs.readFile.bind(fs), name, opt, (err, data) => {
@@ -87,13 +91,16 @@ function get(name, cb, opt = { encoding: 'utf8' }) {
     ioEvent.decount()
   })
 }
+
 function del(name) {
   ioEvent.encount()
   ioLimit.runWithCb(fs.unlink.bind(fs), name, ioEvent.decount)
 }
+
 function changeExt(name, ext = '') {
   return name.slice(0, name.lastIndexOf('.')) + ext
 }
+
 function scanDirByExt(dir, ext, cb) {
   let result = [],
     scanEvent = new CntEvent()
@@ -117,6 +124,7 @@ function scanDirByExt(dir, ext, cb) {
   scanEvent.add(cb, result)
   helper(dir, ext, scanEvent)
 }
+
 function toDir(to, from) {
   //get relative path without posix/win32 problem
   if (from[0] == '.') from = from.slice(1)
@@ -136,6 +144,7 @@ function toDir(to, from) {
   for (let i = 0; i < k.length; i++) if (k[i] == '/') ret += '../'
   return ret + to.slice(len)
 }
+
 function commonDir(pathA, pathB) {
   if (pathA[0] == '.') pathA = pathA.slice(1)
   if (pathB[0] == '.') pathB = pathB.slice(1)
@@ -151,6 +160,7 @@ function commonDir(pathA, pathB) {
   let len = pub.lastIndexOf('/') + 1
   return pathA.slice(0, len)
 }
+
 function commandExecute(cb, helper) {
   console.time('Total use')
   function endTime() {
@@ -167,6 +177,7 @@ function commandExecute(cb, helper) {
     fastCnt = new CntEvent()
     fastCnt.add(endTime)
   }
+
   function doNext() {
     let nxt = iter.next()
     while (!nxt.done && nxt.value.startsWith('-')) nxt = iter.next()
@@ -182,6 +193,7 @@ function commandExecute(cb, helper) {
   while (!nxt.done && !nxt.value.endsWith('.js')) nxt = iter.next()
   doNext()
 }
+
 module.exports = {
   mkdirs: mkdirs,
   get: get,

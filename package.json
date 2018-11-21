@@ -18,6 +18,9 @@
   "bugs": {
     "url": "https://github.com/qwerty472123/wxappUnpacker/issues"
   },
+  "scripts": {
+    "unpack": "node ./src/wuWxapkg"
+  },
   "homepage": "https://github.com/qwerty472123/wxappUnpacker#readme",
   "dependencies": {
     "css-tree": "^1.0.0-alpha.28",
